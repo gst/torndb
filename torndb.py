@@ -44,6 +44,15 @@ except ImportError:
 version = "0.3"
 version_info = (0, 3, 0, 0)
 
+
+class TornDbException(Exception):
+    """Base class for torndb specific exceptions"""
+
+
+class MultipleRowsReturned(TornDbException):
+    pass
+
+
 class Connection(object):
     """A lightweight wrapper around MySQLdb DB-API connections.
 
@@ -152,7 +161,7 @@ class Connection(object):
         if not rows:
             return None
         elif len(rows) > 1:
-            raise Exception("Multiple rows returned for Database.get() query")
+            raise MultipleRowsReturned("Multiple rows returned for Database.get() query")
         else:
             return rows[0]
 
